@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
+import 'screens/category.dart';
 
-void main() => runApp(const MyApp());
-
-class  MyApp extends StatelessWidget{
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Nms project',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('NoteManagementSystem'),
-        ),
-        body: const Center(
-          child: Text('Hello NMS'),
-        ),
-      ),
-    );
-  }
+void main() {
+  runApp(const CategoryScreen());
 }
