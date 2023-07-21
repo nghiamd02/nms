@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'models/category.dart';
+import 'model/category.dart';
 
 class SQLHelper {
   static Future<void> createCategoryTable(Database database) async {

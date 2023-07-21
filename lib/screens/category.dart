@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nms/models/category.dart';
+import 'package:nms/model/category.dart';
 import 'package:nms/spl_helper.dart';
 
 class CategoryScreen extends StatelessWidget {
