@@ -3,6 +3,7 @@ import 'package:nms/screens/side_menu.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../models/status.dart';
+import '../models/note.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -15,26 +16,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final List<Status> statusData = [
-      Status(status: StatusType.pending),
-      Status(status: StatusType.pending),
-      Status(status: StatusType.pending),
-      Status(status: StatusType.pending),
-      Status(status: StatusType.done),
-      Status(status: StatusType.done),
-      Status(status: StatusType.done),
-      Status(status: StatusType.done),
-      Status(status: StatusType.done),
-      Status(status: StatusType.done),
-      Status(status: StatusType.processing),
-      Status(status: StatusType.processing),
-      Status(status: StatusType.processing),
-      Status(status: StatusType.processing),
-      Status(status: StatusType.processing),
-      Status(status: StatusType.processing),
-      Status(status: StatusType.processing),
-      Status(status: StatusType.processing),
-      Status(status: StatusType.processing),
-      Status(status: StatusType.processing),
+      
     ];
 
     Map<StatusType, int> sum = {};
