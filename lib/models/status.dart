@@ -84,3 +84,30 @@ class StatusProvider {
 
   Future<void> close() async => db.close();
 }
+
+
+class Status {
+  final StatusType status;
+  final DateTime? createAt;
+
+  Status({required this.status}) : createAt = DateTime.now();
+}
+
+enum StatusType {
+  processing,
+  done,
+  pending
+}
+
+extension StatusTitle on StatusType {
+  String get title {
+    switch (this) {
+      case StatusType.done:
+        return 'Done';
+      case StatusType.processing:
+        return 'Processing';
+      case StatusType.pending:
+        return 'Pending';
+    }
+  }
+}
