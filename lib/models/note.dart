@@ -1,5 +1,5 @@
 import 'package:nms/models/category.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:nms/models/priority.dart';
 import 'package:nms/models/status.dart';
 
 class Note {
