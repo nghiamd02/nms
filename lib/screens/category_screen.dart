@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nms/models/category.dart';
-import 'package:nms/spl_helper.dart';
+import 'package:nms/helpers/category_helper.dart';
+import 'package:intl/intl.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({super.key});
@@ -25,7 +26,7 @@ class _HomePageState extends State<_HomePage> {
   bool _isLoading = true;
 
   Future<void> _refreshJournals() async {
-    final data = await SQLHelper.getCategories();
+    final data = await CategoryHelper.getCategories();
 
     setState(() {
       _journals = data;
@@ -96,22 +97,22 @@ class _HomePageState extends State<_HomePage> {
   }
 
   Future<void> _addCategory() async {
-    await SQLHelper.createCategory(
+    await CategoryHelper.createCategory(
         Category(
-            name: _nameController.text, date: getCurrentDateTime().toString()),
+            name: _nameController.text, date: getCurrentDateTime()),
         () {});
     _refreshJournals();
   }
 
   Future<void> _updateCategory(int id) async {
-    await SQLHelper.updateCategory(
+    await CategoryHelper.updateCategory(
         Category(id: id, name: _nameController.text));
 
     _refreshJournals();
   }
 
   Future<void> _deleteCategory(int id) async {
-    await SQLHelper.deleteCategory(id);
+    await CategoryHelper.deleteCategory(id);
 
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -166,6 +167,6 @@ class _HomePageState extends State<_HomePage> {
   }
 }
 
-DateTime getCurrentDateTime() {
-  return DateTime.now();
+String getCurrentDateTime() {
+  return DateFormat('dd/MM/yyyy h:mm a').format(DateTime.now());
 }

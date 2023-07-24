@@ -1,6 +1,11 @@
 class Status {
-  final String? title;
-  final DateTime? createAt;
+  final int? id;
+  final String? name;
+  final String? date;
 
-  Status({required this.title}) : createAt = DateTime.now();
+  Status({this.id, this.name, this.date});
+
+  Map<String, dynamic> toMap() {
+    return {'id': id, 'name': name, 'date': date};
+  }
 }
