@@ -37,7 +37,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   sqflite: ^2.2.8+4
+<<<<<<< HEAD
   intl: ^0.18.1
+=======
+>>>>>>> dccbfec (create the frame of notes screen and create 4 tables for objects)
 
 dev_dependencies:
   flutter_test:
