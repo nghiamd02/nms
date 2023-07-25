@@ -1,6 +1,12 @@
 class Category {
-  final String? title;
-  final DateTime? createAt;
+  int? id;
+  String? title;
+  String? createAt;
 
-  Category({required this.title}) : createAt = DateTime.now();
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+    };
+  }
 }

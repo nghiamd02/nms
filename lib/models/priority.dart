@@ -1,6 +1,9 @@
 class Priority {
-  final String? title;
-  final DateTime? createAt;
+  int? id;
+  String? title;
+  String? createAt;
 
-  Priority({required this.title}) : createAt = DateTime.now();
+  Map<String, dynamic> toMap() {
+    return {'id': id, 'title': title};
+  }
 }
