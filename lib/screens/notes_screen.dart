@@ -5,7 +5,6 @@ import 'package:nms/models/category.dart';
 import 'package:nms/models/note.dart';
 import 'package:nms/models/priority.dart';
 import 'package:nms/models/status.dart';
-import 'package:nms/screens/note_details.dart';
 
 class NoteScreen extends StatefulWidget {
   const NoteScreen({super.key});
@@ -17,7 +16,8 @@ class NoteScreen extends StatefulWidget {
 }
 
 class _NoteScreenState extends State<NoteScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _ = TextEditingController();
 
   Widget _addingDialog() {
     return AlertDialog(
@@ -46,10 +46,10 @@ class _NoteScreenState extends State<NoteScreen> {
             children: [
               Text('adfkasf'),
               const Spacer(),
-              ElevatedButton(onPressed: (){
+              ElevatedButton(onPressed: () async{
                 var now = DateTime.now();
-                showDatePicker(context: context, initialDate: now, firstDate: DateTime(now.year - 1, now.month, now.day), lastDate: DateTime(now.year + 10, now.month, now.day));
-              }, child: Text('...'), style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),),
+                var planDate = await showDatePicker(context: context, initialDate: now, firstDate: DateTime(now.year - 1, now.month, now.day), lastDate: DateTime(now.year + 10, now.month, now.day));
+              }, child: const Text('...'), style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),),
             ],
           )
         ],
@@ -81,6 +81,57 @@ class _NoteScreenState extends State<NoteScreen> {
           showDialog(context: context, builder: (context) => _addingDialog());
         },
         child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class NoteDetails extends StatelessWidget {
+  const NoteDetails({super.key});
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle textStyle = TextStyle(fontSize: 20, color: Colors.white);
+    return Card(
+      color: Colors.orange,
+      margin: EdgeInsets.all(5),
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              children: [
+                Text(
+                  'Name: abcvdasf',
+                  style: textStyle,
+                ),
+                Text(
+                  'Priority: dsfaj',
+                  style: textStyle,
+                ),
+                Text(
+                  'Status: dsafdf',
+                  style: textStyle,
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                Text(
+                  'Plan Date: 2142',
+                  style: textStyle,
+                ),
+                Text(
+                  'Create Date: 12313',
+                  style: textStyle,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
