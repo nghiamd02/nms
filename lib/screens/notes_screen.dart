@@ -36,8 +36,8 @@ class _NoteScreenState extends State<NoteScreen> {
               const Spacer(),
               DropdownButton(
                   items: ['Apple', 'Banana', 'Orange']
-                      .map((element) =>
-                      DropdownMenuItem(value: element, child: Text(element)))
+                      .map((element) => DropdownMenuItem(
+                          value: element, child: Text(element)))
                       .toList(),
                   onChanged: (value) {}),
             ],
@@ -46,17 +46,33 @@ class _NoteScreenState extends State<NoteScreen> {
             children: [
               Text('adfkasf'),
               const Spacer(),
-              ElevatedButton(onPressed: () async{
-                var now = DateTime.now();
-                var planDate = await showDatePicker(context: context, initialDate: now, firstDate: DateTime(now.year - 1, now.month, now.day), lastDate: DateTime(now.year + 10, now.month, now.day));
-              }, child: const Text('...'), style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),),
+              ElevatedButton(
+                onPressed: () async {
+                  var now = DateTime.now();
+                  var planDate = await showDatePicker(
+                      context: context,
+                      initialDate: now,
+                      firstDate: DateTime(now.year - 1, now.month, now.day),
+                      lastDate: DateTime(now.year + 10, now.month, now.day));
+                },
+                child: const Text('...'),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.orange[200]),
+              ),
             ],
           )
         ],
       ),
       actions: [
-        TextButton(onPressed: (){}, child: Text('Add', style: TextStyle(color: Colors.grey),)),
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('Cancel', style: TextStyle(color: Colors.grey),)),
+        TextButton(
+            onPressed: () {},
+            child: Text(
+              'Add',
+            )),
+        TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Cancel',
+            )),
       ],
     );
   }
@@ -89,48 +105,63 @@ class _NoteScreenState extends State<NoteScreen> {
 class NoteDetails extends StatelessWidget {
   const NoteDetails({super.key});
 
-
-
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = TextStyle(fontSize: 20, color: Colors.white);
+    // TextStyle textStyle = TextStyle(fontSize: 20, color: Colors.white);
+    // return Card(
+    //   color: Colors.orange[200],
+    //   margin: EdgeInsets.all(15),
+    //   child: Padding(
+    //     padding: EdgeInsets.all(10),
+    //     child: Row(
+    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //       children: [
+    //         Column(
+    //           children: [
+    //             Text(
+    //               'Name: abcvdasf',
+    //               style: textStyle,
+    //             ),
+    //             Text(
+    //               'Priority: dsfaj',
+    //               style: textStyle,
+    //             ),
+    //             Text(
+    //               'Status: dsafdf',
+    //               style: textStyle,
+    //             ),
+    //           ],
+    //         ),
+    //         Column(
+    //           children: [
+    //             Text(
+    //               'Plan Date: 2142',
+    //               style: textStyle,
+    //             ),
+    //             Text(
+    //               'Create Date: 12313',
+    //               style: textStyle,
+    //             ),
+    //           ],
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
+
     return Card(
-      color: Colors.orange,
-      margin: EdgeInsets.all(5),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                Text(
-                  'Name: abcvdasf',
-                  style: textStyle,
-                ),
-                Text(
-                  'Priority: dsfaj',
-                  style: textStyle,
-                ),
-                Text(
-                  'Status: dsafdf',
-                  style: textStyle,
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Text(
-                  'Plan Date: 2142',
-                  style: textStyle,
-                ),
-                Text(
-                  'Create Date: 12313',
-                  style: textStyle,
-                ),
-              ],
-            ),
-          ],
+      color: Colors.orange[200],
+      margin: const EdgeInsets.all(10),
+      child: ListTile(
+        title: Text('Name: Play Football', style: TextStyle(fontSize: 25),),
+        subtitle: Text(
+            'Category: Sport\nPriority: Slow\nStatus: Done\nPlan Date: 123\nCreate Date: 3213', style: TextStyle(fontSize: 20),),
+        trailing: SizedBox(
+          width: 100,
+          child: Row(children: [
+            IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.delete))
+          ]),
         ),
       ),
     );
