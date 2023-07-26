@@ -3,7 +3,8 @@ class Priority {
   String? title;
   String? createAt;
 
+  Priority({this.id, this.title, this.createAt});
   Map<String, dynamic> toMap() {
-    return {'id': id, 'title': title};
+    return {'priorityId': id, 'priorityTitle': title, 'createAt': createAt};
   }
 }

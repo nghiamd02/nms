@@ -3,12 +3,12 @@ class Category {
   String? title;
   String? createAt;
 
+  Category({this.id, this.title, this.createAt});
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'title': title,
+      'categoryId': id,
+      'categoryTitle': title,
+      'createAt' : createAt,
     };
   }
-
-
 }

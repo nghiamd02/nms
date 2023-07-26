@@ -3,10 +3,13 @@ class Status {
   String? title;
   String? createAt;
 
+  Status({this.id, this.title, this.createAt});
+
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'title': title,
+      'statusId': id,
+      'statusTitle': title,
+      'createAt': createAt,
     };
   }
 }

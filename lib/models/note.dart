@@ -12,6 +12,8 @@ class Note {
    String? planDate;
    String? createAt;
 
+   Note({this.id, this.name, this.category, this.priority, this.status, this.planDate, this.createAt});
+
   Map<String, dynamic> toMap(){
     return {
       'id' : id,
