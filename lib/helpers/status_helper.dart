@@ -1,57 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:nms/models/status.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:nms/constants/database_constant.dart';
+
+const String tableStatus = 'status';
+const String columnId = 'id';
+const String columnTitle = 'title';
 
 class StatusHelper {
-  static Future<void> createStatusTable(Database database) async {
-    await database.execute('''CREATE TABLE Status(
-      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      name TEXT,
-      date TEXT
-      )''');
+  static Future<void> createStatusTable(Database database) async{
+    await database.execute('''
+      CREATE TABLE $tableStatus(
+          $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
+          $columnTitle TEXT NOT NULL,
+          createAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+          )
+    ''');
   }
 
-  static Future<Database> db() async {
+  static Future<Database> db() async{
     return openDatabase(
-      'status.db',
-      version: 1,
-      onCreate: (Database database, int version) async {
-        await createStatusTable(database);
-      },
+        databaseName,
+        version: 1,
+        onCreate: (Database database, int version) async{
+          await createStatusTable(database);
+        }
     );
   }
 
-  static Future<int> createStatus(Status status, refreshJournals) async {
+  static Future<int> createStatus(Status status) async{
     final db = await StatusHelper.db();
-
-    final id = await db.insert('Status', status.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    final id = await  db.insert(tableStatus, status.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
   }
 
-  static Future<List<Map<String, dynamic>>> getStatuses() async {
+  static Future<List<Map<String, dynamic>>> getStatusList() async{
     final db = await StatusHelper.db();
-    return db.query('Status', orderBy: "id");
+    return db.query(tableStatus, orderBy: 'id');
   }
 
-  static Future<List<Map<String, dynamic>>> getStatus(int id) async {
+  static Future<List<Map<String, dynamic>>> getStatus(int id) async{
     final db = await StatusHelper.db();
-    return db.query('Status', where: "id = ?", whereArgs: [id], limit: 1);
+    return db.query(tableStatus, where: 'id = ?', whereArgs: [id], limit: 1);
   }
 
-  static Future<int> updateStatus(Status status) async {
+  static Future<int> updateStatus(Status status) async{
     final db = await StatusHelper.db();
-    final result = await db.update('Status', status.toMap(),
-        where: "id= ?", whereArgs: [status.id]);
+
+    final result = await db.update(tableStatus, status.toMap(), where: 'id = ?', whereArgs: [status.id]);
     return result;
   }
 
-  static Future<void> deleteStatus(int id) async {
+  static Future<void> deleteStatus(int id) async{
     final db = await StatusHelper.db();
-    try {
-      await db.delete("Status", where: "id = ?", whereArgs: [id]);
-    } catch (err) {
-      debugPrint("Something went wrong when deleting an Status: $err");
+    try{
+      db.delete(tableStatus, where: 'id = ?', whereArgs: [id]);
+    }catch(err){
+      debugPrint('Something went wrong when deleting a status: $err');
     }
+
   }
 }
