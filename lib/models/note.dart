@@ -10,7 +10,7 @@ class Note {
    Priority? priority;
    Status? status;
    String? planDate;
-   DateTime? createAt;
+   String? createAt;
 
   Map<String, dynamic> toMap(){
     return {

@@ -8,8 +8,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-
     return MaterialApp(
       title: 'Nms project',
       home: NoteScreen(),

@@ -13,7 +13,7 @@ class StatusHelper {
       CREATE TABLE $tableStatus(
           $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
           $columnTitle TEXT NOT NULL,
-          createAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+          createAt TEXT
           )
     ''');
   }

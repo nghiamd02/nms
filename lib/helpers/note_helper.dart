@@ -25,7 +25,7 @@ class NoteHelper {
           $columnPriority INTEGER NOT NULL,
           $columnStatus INTEGER NOT NULL,
           $columnPlanDate TEXT NOT NULL,
-          createAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+          createAt TEXT
           FOREIGN KEY ($columnCategory) REFERENCES $tableCategory(id) ON DELETE CASCADE ON UPDATE NO ACTION,
           FOREIGN KEY ($columnPriority) REFERENCES $tablePriority(id) ON DELETE CASCADE ON UPDATE NO ACTION,
           FOREIGN KEY ($columnStatus) REFERENCES $tableStatus(id) ON DELETE CASCADE ON UPDATE NO ACTION,
