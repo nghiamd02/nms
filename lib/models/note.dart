@@ -1,16 +1,13 @@
-import 'package:nms/models/category.dart';
-import 'package:nms/models/priority.dart';
-import 'package:nms/models/status.dart';
-
-
 class Note {
-   String? id;
-   String? name;
-   Category? category;
-   Priority? priority;
-   Status? status;
-   String? planDate;
-   DateTime? createAt;
+  int? id;
+  String? name;
+  int? category;
+  int? priority;
+  int? status;
+  String? planDate;
+  String? createAt;
+
+  Note({this.id, this.name, this.category, this.priority, this.status, this.planDate, this.createAt});
 
   Map<String, dynamic> toMap(){
     return {
@@ -21,5 +18,16 @@ class Note {
       'status': status,
       'planDate': planDate,
     };
+  }
+
+  factory Note.fromJson(Map<String, dynamic> json) {
+    return Note(
+      id: json['id'],
+      name: json['name'],
+      category: json['category'],
+      priority: json['priority'],
+      status: json['status'],
+      planDate: json['planDate']
+    );
   }
 }

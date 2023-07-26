@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nms/models/priority.dart';
 import 'package:nms/helpers/priority_helper.dart';
 import 'package:intl/intl.dart';
+import 'package:nms/screens/side_menu.dart';
 
 class PriorityScreen extends StatelessWidget {
   const PriorityScreen({super.key});
@@ -97,18 +98,32 @@ class _HomePageState extends State<_HomePage> {
   }
 
   Future<void> _addPriority() async {
-    await PriorityHelper.createPriority(
-        Priority(
-            name: _nameController.text, date: getCurrentDateTime()),
-            () {});
-    _refreshJournals();
+    bool rs = await PriorityHelper.createPriority(
+      Priority(
+          name: _nameController.text, date: getCurrentDateTime()),
+    );
+
+    if(rs == false) { // 2:error 1: success
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('ERROR: Name duplicated!'),
+      ));
+    }
+    else {
+      _refreshJournals();
+    }
   }
 
   Future<void> _updatePriority(int id) async {
-    await PriorityHelper.updatePriority(
-        Priority(id: id, name: _nameController.text));
-
-    _refreshJournals();
+    final rs = await PriorityHelper.updatePriority(
+        Priority(id: id, name: _nameController.text,date: getCurrentDateTime()));
+    if(rs == false) { // 2:error 1: success
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('ERROR: Name duplicated!'),
+      ));
+    }
+    else {
+      _refreshJournals();
+    }
   }
 
   Future<void> _deletePriority(int id) async {
@@ -124,10 +139,6 @@ class _HomePageState extends State<_HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Priority Form'),
-      ), // AppBar
-
       body: _isLoading
           ? const Center(
         child: CircularProgressIndicator(),

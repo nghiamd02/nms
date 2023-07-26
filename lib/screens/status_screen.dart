@@ -26,7 +26,7 @@ class _HomePageState extends State<_HomePage> {
   bool _isLoading = true;
 
   Future<void> _refreshJournals() async {
-    final data = await StatusHelper.getStatuses();
+    final data = await StatusHelper.getStatusList();
 
     setState(() {
       _journals = data;
@@ -97,18 +97,33 @@ class _HomePageState extends State<_HomePage> {
   }
 
   Future<void> _addStatus() async {
-    await StatusHelper.createStatus(
+    bool rs = await StatusHelper.createStatus(
         Status(
-            name: _nameController.text, date: getCurrentDateTime()),
-            () {});
-    _refreshJournals();
+            name: _nameController.text),
+            );
+
+    if(rs == false) { // 2:error 1: success
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('ERROR: Name duplicated!'),
+      ));
+    }
+    else {
+      _refreshJournals();
+    }
   }
 
   Future<void> _updateStatus(int id) async {
-    await StatusHelper.updateStatus(
+    final rs = await StatusHelper.updateStatus(
         Status(id: id, name: _nameController.text));
 
-    _refreshJournals();
+    if(rs == false) { // 2:error 1: success
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('ERROR: Name duplicated!'),
+      ));
+    }
+    else {
+      _refreshJournals();
+    }
   }
 
   Future<void> _deleteStatus(int id) async {
@@ -124,10 +139,6 @@ class _HomePageState extends State<_HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Status Form'),
-      ), // AppBar
-
       body: _isLoading
           ? const Center(
         child: CircularProgressIndicator(),
@@ -139,7 +150,7 @@ class _HomePageState extends State<_HomePage> {
           margin: const EdgeInsets.all(15),
           child: ListTile(
               title: Text("Name: ${_journals[index]['name']}"),
-              subtitle: Text(getCurrentDateTime().toString()),
+              // subtitle: Text(getCurrentDateTime().toString()),
               trailing: SizedBox(
                 width: 100,
                 child: Row(
@@ -167,6 +178,6 @@ class _HomePageState extends State<_HomePage> {
   }
 }
 
-String getCurrentDateTime() {
-  return DateFormat('dd/MM/yyyy h:mm a').format(DateTime.now());
-}
+// String getCurrentDateTime() {
+//   return DateFormat('dd/MM/yyyy h:mm a').format(DateTime.now());
+// }
