@@ -97,18 +97,32 @@ class _HomePageState extends State<_HomePage> {
   }
 
   Future<void> _addCategory() async {
-    await CategoryHelper.createCategory(
+    final rs = await CategoryHelper.createCategory(
         Category(
             name: _nameController.text, date: getCurrentDateTime()),
-        () {});
+        );
+    if(rs == false) { // 2:error 1: success
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    content: Text('ERROR: Name duplicated!'),
+    ));
+    }
+    else {
     _refreshJournals();
+    }
   }
 
   Future<void> _updateCategory(int id) async {
-    await CategoryHelper.updateCategory(
-        Category(id: id, name: _nameController.text));
-
-    _refreshJournals();
+    final rs =  CategoryHelper.updateCategory(
+        Category(id: id, name: _nameController.text, date: getCurrentDateTime())
+    );
+    if(rs == false) { // 2:error 1: success
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('ERROR: Name duplicated!'),
+      ));
+    }
+    else {
+      _refreshJournals();
+    }
   }
 
   Future<void> _deleteCategory(int id) async {

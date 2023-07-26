@@ -26,7 +26,7 @@ class _HomePageState extends State<_HomePage> {
   bool _isLoading = true;
 
   Future<void> _refreshJournals() async {
-    final data = await StatusHelper.getStatuses();
+    final data = await StatusHelper.getStatusList();
 
     setState(() {
       _journals = data;
@@ -97,18 +97,33 @@ class _HomePageState extends State<_HomePage> {
   }
 
   Future<void> _addStatus() async {
-    await StatusHelper.createStatus(
+    bool rs = await StatusHelper.createStatus(
         Status(
             name: _nameController.text, date: getCurrentDateTime()),
-            () {});
-    _refreshJournals();
+            );
+
+    if(rs == false) { // 2:error 1: success
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('ERROR: Name duplicated!'),
+      ));
+    }
+    else {
+      _refreshJournals();
+    }
   }
 
   Future<void> _updateStatus(int id) async {
-    await StatusHelper.updateStatus(
-        Status(id: id, name: _nameController.text));
+    final rs = await StatusHelper.updateStatus(
+        Status(id: id, name: _nameController.text, date: getCurrentDateTime()));
 
-    _refreshJournals();
+    if(rs == false) { // 2:error 1: success
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('ERROR: Name duplicated!'),
+      ));
+    }
+    else {
+      _refreshJournals();
+    }
   }
 
   Future<void> _deleteStatus(int id) async {
