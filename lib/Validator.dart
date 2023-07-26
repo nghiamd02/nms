@@ -30,4 +30,6 @@ class Validator {
     }
     return null;
   }
+
+  static nameValidator(String? value) {}
 }
