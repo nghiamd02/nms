@@ -17,15 +17,13 @@ class NoteScreen extends StatefulWidget {
 }
 
 class _NoteScreenState extends State<NoteScreen> {
-  final _formKey = GlobalKey<FormState>();
-
   Widget _addingDialog() {
     return AlertDialog(
       content: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          TextField(
+          const TextField(
             decoration: InputDecoration(
               label: Text('Enter Note Name'),
             ),

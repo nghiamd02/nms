@@ -1,34 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:nms/screens/category_screen.dart';
-import 'package:nms/screens/priority_screen.dart';
-import 'package:nms/screens/status_screen.dart';
-import 'package:nms/screens/notes.dart';
-import 'package:nms/screens/dashboard.dart';
-
+import 'package:nms/screens/side_menu.dart';
+import 'package:nms/screens/dashboard_screen.dart';
 
 void main() {
-  runApp(const StatusScreen());
+  runApp(const MyApp());
+}
+
+class  MyApp extends StatelessWidget{
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Nms project',
       home: Scaffold(
-        body: Center(
+        drawer: const SideMenu(),
+        body: const Center(
           child: Dashboard(),
         ),
       ),
     );
   }
-}
-
-class AppBarParams {
-  final Widget title;
-  final Color backgroundColor;
-
-  AppBarParams({
-    required this.title,
-    required this.backgroundColor,
-  });
 }

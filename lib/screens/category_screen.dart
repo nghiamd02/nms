@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nms/models/category.dart';
 import 'package:nms/helpers/category_helper.dart';
 import 'package:intl/intl.dart';
+import 'package:nms/screens/side_menu.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({super.key});
@@ -124,6 +125,7 @@ class _HomePageState extends State<_HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const SideMenu(),
       appBar: AppBar(
         title: const Text('Category Form'),
       ), // AppBar
