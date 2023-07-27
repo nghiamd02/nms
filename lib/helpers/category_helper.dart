@@ -17,7 +17,7 @@ class CategoryHelper {
 
   static Future<List<Map<String, dynamic>>> getCategories() async {
     final db = await SQLHelper.db();
-    return db.query(tableCategory, orderBy: '$columnCategoryId');
+    return db.query(tableCategory, orderBy: columnCategoryId);
   }
 
   static Future<List<Map<String, dynamic>>> getCategory(int id) async {

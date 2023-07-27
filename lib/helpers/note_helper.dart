@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nms/models/note.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:nms/helpers/category_helper.dart';
-import 'package:nms/helpers/priority_helper.dart';
-import 'package:nms/helpers/status_helper.dart';
 import 'package:nms/helpers/sql_helper.dart';
 
-import 'package:nms/constants/database_constant.dart';
 
 const String tableNote = 'notes';
 const String columnNoteId = 'noteId';
@@ -15,6 +11,7 @@ const String columnCategory = 'category';
 const String columnPriority = 'priority';
 const String columnStatus = 'status';
 const String columnPlanDate = 'planDate';
+const String columnCreateAt = 'createAt';
 
 class NoteHelper {
   static Future<int> createNote(Note note) async {
@@ -29,9 +26,10 @@ class NoteHelper {
     return db.query(tableNote, orderBy: columnNoteId);
   }
 
-  static Future<List<Map<String, dynamic>>> getNote(int id) async {
+  static Future<Map<String, dynamic>> getNote(int id) async {
     final db = await SQLHelper.db();
-    return db.query(tableNote, where: '$columnNoteId = ?', whereArgs: [id], limit: 1);
+    List<Map<String, dynamic>> noteList = await db.query(tableNote, where: '$columnNoteId = ?', whereArgs: [id]);
+    return noteList.first;
   }
 
   static Future<int> updateNote(Note note) async {
