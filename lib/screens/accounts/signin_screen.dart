@@ -105,7 +105,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        _login();
+                        await _login();
                       }
                     },
                     child: const Text('Sign in')),
@@ -128,7 +128,7 @@ class _SignInScreenState extends State<SignInScreen> {
       if (acc['email'] == _emailController.text &&
           acc['password'] == _passwordController.text) {
         isLoginSuccess = true;
-        SQLAccountHelper.setCurrentAccount(_emailController);
+        await SQLAccountHelper.setCurrentAccount(_emailController);
         PrefHelper.saveCredentials(
             _rememberMe, _emailController, _passwordController);
         // ignore: use_build_context_synchronously
@@ -145,3 +145,7 @@ class _SignInScreenState extends State<SignInScreen> {
         : null;
   }
 }
+
+
+// cung lam dum di
+

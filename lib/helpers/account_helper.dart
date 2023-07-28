@@ -88,18 +88,19 @@ class SQLAccountHelper {
     }
   }
 
-  static setCurrentAccount(TextEditingController emailController) async {
+  static Future<void> setCurrentAccount(TextEditingController emailController) async {
     var db = await DBHelper.db();
     List<Map<String, dynamic>> result = await db.query(
       accountsTable,
       where: 'email = ?',
       whereArgs: [emailController.text],
     );
-
+    print(result.first);
     if (result.isNotEmpty) {
       currentAccount = result.first;
     } else {
-      return null;
+      print("ERROR");
+      // return null;
     }
   }
 }

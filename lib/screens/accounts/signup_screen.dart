@@ -148,12 +148,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
                                 'Signup successful! Your information: \nEmail: ${_emailController.text}')));
-                        _addAccount();
+                        await _addAccount();
                         _emailController.text = '';
                         SignUpScreen._passwordController.text = '';
                         _confirmPasswordController.text = '';
