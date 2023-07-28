@@ -1,4 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import 'helpers/account_helper.dart';
 
 class Validator {
   static String? emailValidator(String? value) {
@@ -12,15 +14,6 @@ class Validator {
     }
   }
 
-  static String? passwordValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your password';
-    } else if (value.length < 8) {
-      return 'Password must be as least 8 characters';
-    }
-    return null;
-  }
-
   static String? confirmPasswordValidator(
       String? value, TextEditingController passwordController) {
     if (value == null || value.isEmpty) {
@@ -31,5 +24,14 @@ class Validator {
     return null;
   }
 
-  static nameValidator(String? value) {}
+  static String? CheckCurrentPasswordValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your current password';
+    } else if (value != SQLAccountHelper.currentAccount['password']) {
+      return 'Password does not match';
+    }
+    return null;
+  }
+
+//   static nameValidator(String? value) {}
 }

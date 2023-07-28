@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
+import 'package:nms/helpers/account_helper.dart';
 import 'package:nms/helpers/category_helper.dart';
 import 'package:nms/helpers/note_helper.dart';
 import 'package:nms/helpers/priority_helper.dart';
 import 'package:nms/helpers/status_helper.dart';
+import 'package:nms/models/account.dart';
 
 import 'package:nms/models/note.dart';
 
 class NoteScreen extends StatefulWidget {
-  const NoteScreen({super.key});
+  NoteScreen({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -22,6 +24,7 @@ class _NoteScreenState extends State<NoteScreen> {
   List<Map<String, dynamic>> _categories = [];
   List<Map<String, dynamic>> _priorities = [];
   List<Map<String, dynamic>> _statusList = [];
+  late Account _currentAccount;
 
   bool _isLoading = true;
   final TextEditingController _nameController = TextEditingController();
@@ -29,6 +32,10 @@ class _NoteScreenState extends State<NoteScreen> {
   String? _priorityValue;
   String? _statusValue;
   DateTime? _planDate;
+
+  List<Map<String, dynamic>> filterNotes(){
+      return _journals.where((element) => Note.fromJson(element).accountId == _currentAccount.id).toList();
+  }
 
   Future<void> _refreshJournals() async {
     final data = await NoteHelper.getNotes();
@@ -41,6 +48,8 @@ class _NoteScreenState extends State<NoteScreen> {
   @override
   void initState() {
     super.initState();
+    _currentAccount = Account.fromJson(SQLAccountHelper.currentAccount);
+    print(_currentAccount.email);
     _getData();
   }
 
@@ -48,6 +57,7 @@ class _NoteScreenState extends State<NoteScreen> {
     final categoriesData = await CategoryHelper.getCategories();
     final prioritiesData = await PriorityHelper.getPriorities();
     final statusData = await StatusHelper.getStatusList();
+
     setState(() {
       _categories = categoriesData;
       _priorities = prioritiesData;
@@ -220,7 +230,7 @@ class _NoteScreenState extends State<NoteScreen> {
               separatorBuilder: (context, index) => const SizedBox(
                 height: 10,
               ),
-              itemCount: _journals.length,
+              itemCount: filterNotes().length,
               itemBuilder: (context, index) {
                 return NoteDetails(
                   index: index,
@@ -263,6 +273,7 @@ class _NoteScreenState extends State<NoteScreen> {
         priority: priorityId,
         status: statusId,
         planDate: DateFormat('dd/MM/yyyy').format(_planDate!),
+        accountId: _currentAccount.id,
         createAt: getCurrentDateTime()));
     _refreshJournals();
   }
@@ -317,7 +328,7 @@ class NoteDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Note? nowNote = Note.fromJson(notes[index]);
+    Note? nowNote = Note.fromJson(currentNote);
     String noteCategory = categories.firstWhere((element) =>
         element[columnCategoryId] == nowNote.category)[columnCategoryName];
     String notePriority = priorities.firstWhere((element) =>

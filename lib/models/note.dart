@@ -4,6 +4,7 @@ class Note {
   int? category;
   int? priority;
   int? status;
+  int? accountId;
   String? planDate;
   String? createAt;
 
@@ -14,6 +15,7 @@ class Note {
       this.priority,
       this.status,
       this.planDate,
+      this.accountId,
       this.createAt});
 
   Map<String, dynamic> toMap() {
@@ -24,6 +26,7 @@ class Note {
       'priority': priority,
       'status': status,
       'planDate': planDate,
+      'accountId': accountId,
       'createAt': createAt,
     };
   }
@@ -36,6 +39,7 @@ class Note {
         priority: json['priority'],
         status: json['status'],
         planDate: json['planDate'],
+        accountId: json['accountId'],
         createAt: json['createAt']);
   }
 }

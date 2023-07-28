@@ -1,21 +1,23 @@
 import 'package:sqflite/sqflite.dart';
-
 import '../helpers/category_helper.dart';
 import '../helpers/priority_helper.dart';
 import '../helpers/status_helper.dart';
+
 const String databaseName = 'nms.db';
 
 class DBHelper {
-  static Future<void> createStatusTable(Database database) async{
+  static Future<void> createStatusTable(Database database) async {
     const String tableStatus = 'status';
     const String columnStatusId = 'id';
     const String columnStatusName = 'name';
+    const String columnStatusDate = 'date';
     await database.execute('''CREATE TABLE $tableStatus(
           $columnStatusId INTEGER PRIMARY KEY AUTOINCREMENT,
-          $columnStatusName TEXT NOT NULL UNIQUE)''');
+          $columnStatusName TEXT NOT NULL UNIQUE,
+          $columnStatusDate TEXT)''');
   }
 
-  static Future<void> createPriorityTable(Database database) async{
+  static Future<void> createPriorityTable(Database database) async {
     const String tablePriority = 'priorities';
     const String columnPriorityId = 'id';
     const String columnPriorityName = 'name';
@@ -26,7 +28,7 @@ class DBHelper {
           $columnPriorityDate TEXT NOT NULL)''');
   }
 
-  static Future<void> createCategoryTable(Database database) async{
+  static Future<void> createCategoryTable(Database database) async {
     const String tableCategory = 'categories';
     const String columnCategoryId = 'id';
     const String columnCategoryName = 'name';
@@ -37,7 +39,7 @@ class DBHelper {
           $columnCategoryDate TEXT NOT NULL)''');
   }
 
-  static Future<void> createNotesTable(Database database) async{
+  static Future<void> createNotesTable(Database database) async {
     const String tableNote = 'notes';
     const String columnNoteId = 'id';
     const String columnNoteName = 'name';
@@ -45,6 +47,7 @@ class DBHelper {
     const String columnPriority = 'priority';
     const String columnStatus = 'status';
     const String columnPlanDate = 'planDate';
+    const String columnAccountId = 'accountId';
     const String columnCreateAt = 'createAt';
     await database.execute('''CREATE TABLE $tableNote(
           $columnNoteId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,22 +56,39 @@ class DBHelper {
           $columnPriority INTEGER NOT NULL,
           $columnStatus INTEGER NOT NULL,
           $columnPlanDate TEXT NOT NULL,
+          $columnAccountId INTEGER NOT NULL,
           $columnCreateAt TEXT NOT NULL,
           FOREIGN KEY ($columnCategory) REFERENCES $tableCategory($columnCategoryId),
           FOREIGN KEY ($columnPriority) REFERENCES $tablePriority($columnPriorityId),
           FOREIGN KEY ($columnStatus) REFERENCES $tableStatus($columnStatusId))''');
   }
 
-  static Future<Database> db() async{
-    return openDatabase(
-        databaseName,
-        version: 1,
-        onCreate: (Database database, int version) async{
-          await createCategoryTable(database);
-          await createPriorityTable(database);
-          await createStatusTable(database);
-          await createNotesTable(database);
-        }
-    );
+  static Future<void> createAccountTable(Database database) async {
+    const accountsTable = 'accounts';
+    const columnId = 'id';
+    const columnEmail = 'email';
+    const columnPassword = 'password';
+    const columnFirstName = 'firstName';
+    const columnLastName = 'lastName';
+    const columnCreateAt = 'date';
+
+    await database.execute('''CREATE TABLE $accountsTable(
+    $columnId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    $columnEmail TEXT NOT NULL, 
+    $columnPassword TEXT NOT NULL, 
+    $columnFirstName TEXT,
+    $columnLastName TEXT,
+    $columnCreateAt TEXT)''');
+  }
+
+  static Future<Database> db() async {
+    return openDatabase(databaseName, version: 1,
+        onCreate: (Database database, int version) async {
+      await createCategoryTable(database);
+      await createPriorityTable(database);
+      await createStatusTable(database);
+      await createNotesTable(database);
+      await createAccountTable(database);
+    });
   }
 }

@@ -13,6 +13,7 @@ class StatusHelper {
   static Future<bool> createStatus(Status status) async {
     final db = await DBHelper.db();
     try {
+      print('create status');
       final id = await db.insert(tableStatus, status.toMap(),
           conflictAlgorithm: ConflictAlgorithm.fail);
       return true;

@@ -72,7 +72,7 @@ class _DashboardState extends State<Dashboard> {
                     yValueMapper: (Status data, _) =>
                         ((sum[data] ?? 0) / _journals.length * 100),
                     dataLabelMapper: (Status data, _) =>
-                        "${data.name} \n${((sum[data] ?? 0) / _journals.length * 100)}%",
+                        "${data.name} \n${((sum[data] ?? 0) / _journals.length * 100).toStringAsFixed(2)}%",
                     dataLabelSettings: const DataLabelSettings(
                         isVisible: true,
                         color: Colors.black,

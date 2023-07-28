@@ -1,34 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:nms/helpers/account_helper.dart';
+import 'package:nms/models/account.dart';
 
 
 typedef Callback = void Function(int);
 
 class SideMenu extends StatelessWidget {
-  const SideMenu(this.callback, {super.key});
+  SideMenu(this.callback, {super.key});
   final Callback callback;
+  String? accountEmail = Account.fromJson(SQLAccountHelper.currentAccount).email;
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
         child: ListView(
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
+            DrawerHeader(
+              decoration: const BoxDecoration(
                   color: Colors.lightBlue
               ),
               child: Column (
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar (
                       radius: 40,
                       backgroundImage: AssetImage('assets/images/profile.png'),
                       backgroundColor: Colors.white,
                     ),
-                    Text("Note Manager System", style: TextStyle(
+                    const Text("Note Manager System", style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),),
-                    Text("admin@gmail.com", style: TextStyle(
+                    Text(accountEmail!, style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
@@ -96,6 +99,7 @@ class SideMenu extends StatelessWidget {
                   title: const Text("Edit Profile"),
                   leading: const Icon(Icons.share, color: Colors.lightBlue,),
                   onTap: () {
+                    callback(5);
                     Navigator.pop(context);
                   },
                 ),
@@ -103,6 +107,7 @@ class SideMenu extends StatelessWidget {
                   title: const Text("Change Password"),
                   leading: const Icon(Icons.send, color: Colors.lightBlue,),
                   onTap: () {
+                    callback(6);
                     Navigator.pop(context);
                   },
                 ),
