@@ -20,18 +20,20 @@ class _SwitchScreenState extends State<SwitchScreen> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              const Text(
-                ' NoteManagementSystem',
-                style: TextStyle(fontSize: 20.0),
-              ),
-              Text(
-                _currentForm == FormType.SignIn ? '' : '',
-                style: TextStyle(fontSize: 30),
-              ),
-              _buildForm(),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const Text(
+                  ' NoteManagementSystem',
+                  style: TextStyle(fontSize: 20.0),
+                ),
+                Text(
+                  _currentForm == FormType.SignIn ? '' : '',
+                  style: TextStyle(fontSize: 30),
+                ),
+                _buildForm(),
+              ],
+            ),
           ),
         ),
         floatingActionButton: _currentForm == FormType.SignIn

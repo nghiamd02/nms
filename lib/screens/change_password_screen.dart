@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:nms/screens/HomePage.dart';
+import 'package:nms/screens/switch_screen.dart';
 import '../Validator.dart';
-import '../helpers/SQLAccountHelper.dart';
+import '../helpers/sql_helper.dart';
 import '../models/account.dart';
-import 'HomePage.dart';
 
 class ChangePassWord extends StatefulWidget {
   const ChangePassWord({super.key});
@@ -18,18 +18,46 @@ class _ChangePassWordState extends State<ChangePassWord> {
   final _newPassController = TextEditingController();
   final _confirmnewPassController = TextEditingController();
 
-  late bool _isCurrentPassObscure;
-  late bool _isNewPassObscure;
-  late bool _isConfirmPassObscure;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _isCurrentPassObscure = true;
-    _isNewPassObscure = true;
-    _isConfirmPassObscure = true;
+  bool passwordObsured = true;
+  bool confirmpasswordObsured = true;
+  late String password;
+  double strengh = 0;
+  String text = "please enter a password";
+  RegExp numReg = RegExp(r".*[0-9].*");
+  RegExp letterReg = RegExp(r".*[A-Za-z].*");
+  void checkPassword(String value) {
+    password = value.trim();
+    if (password.isEmpty) {
+      setState(() {
+        strengh = 0;
+        text = "please enter a password ";
+      });
+    } else if (password.length < 6) {
+      setState(() {
+        strengh = 1 / 4;
+        text = "your password is too short";
+      });
+    } else if (password.length < 8) {
+      setState(() {
+        strengh = 2 / 4;
+        text = " your password is acceptable but not strong";
+      });
+    } else {
+      if (!letterReg.hasMatch(password) || !numReg.hasMatch(password)) {
+        setState(() {
+          strengh = 3 / 4;
+          text = "your password is strong";
+        });
+      } else {
+        setState(() {
+          strengh = 1;
+          text = "your password is great";
+        });
+      }
+    }
   }
+
+  bool _CurrentPassObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -43,52 +71,98 @@ class _ChangePassWordState extends State<ChangePassWord> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-              const Row(
-                children: [
-                  Icon(
-                    Icons.lock_open,
-                    size: 40,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Change your password',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  )
-                ],
+              const Text(
+                'Change password',
+                style: TextStyle(fontSize: 20, color: Colors.blue),
               ),
               const SizedBox(height: 20),
               TextFormField(
-                obscureText: _isCurrentPassObscure,
+                obscureText: _CurrentPassObscure,
                 controller: _currentPassController,
-                validator: (value) => Validator.passwordValidator(value),
-                decoration: const InputDecoration(
-                  labelText: 'Current password',
-                ),
+                validator: (value) =>
+                    Validator.CheckCurrentPasswordValidator(value),
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    labelText: 'Current password',
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _CurrentPassObscure = !_CurrentPassObscure;
+                          });
+                        },
+                        icon: Icon(
+                          _CurrentPassObscure
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ))),
               ),
               const SizedBox(
                 height: 20,
               ),
               TextFormField(
-                obscureText: _isNewPassObscure,
+                obscureText: passwordObsured,
+                onChanged: (val) => checkPassword(val),
                 controller: _newPassController,
                 validator: (value) => Validator.confirmPasswordValidator(
                     value, _newPassController),
-                decoration: const InputDecoration(
-                  labelText: 'New password',
-                ),
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    labelText: 'New password',
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            passwordObsured = !passwordObsured;
+                          });
+                        },
+                        icon: Icon(
+                          passwordObsured
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ))),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              LinearProgressIndicator(
+                value: strengh,
+                backgroundColor: Colors.grey,
+                color: strengh <= 1 / 4
+                    ? Colors.red
+                    : strengh == 2 / 4
+                        ? Colors.yellow
+                        : strengh == 3 / 4
+                            ? Colors.blue
+                            : Colors.green,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                text,
+                style: TextStyle(fontSize: 18, color: Colors.grey),
               ),
               const SizedBox(
                 height: 20,
               ),
               TextFormField(
-                obscureText: _isConfirmPassObscure,
+                obscureText: confirmpasswordObsured,
                 controller: _confirmnewPassController,
-                validator: (value) => Validator.passwordValidator(value),
-                decoration: const InputDecoration(
-                  labelText: 'Confirm new password',
-                ),
+                validator: (value) => Validator.confirmPasswordValidator(
+                    value, _newPassController),
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    labelText: 'New password',
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            confirmpasswordObsured = !confirmpasswordObsured;
+                          });
+                        },
+                        icon: Icon(
+                          confirmpasswordObsured
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ))),
               ),
               const SizedBox(
                 height: 20,

@@ -1,4 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import 'helpers/sql_helper.dart';
 
 class Validator {
   static String? emailValidator(String? value) {
@@ -26,6 +28,15 @@ class Validator {
     if (value == null || value.isEmpty) {
       return 'Please confirm your password';
     } else if (value != passwordController.text) {
+      return 'Password does not match';
+    }
+    return null;
+  }
+
+  static String? CheckCurrentPasswordValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your current password';
+    } else if (value != SQLAccountHelper.currentAccount['password']) {
       return 'Password does not match';
     }
     return null;

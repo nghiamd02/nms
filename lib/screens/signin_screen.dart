@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:nms/screens/change_password_screen.dart';
+import 'package:nms/screens/edit_profile_screen.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:nms/helpers/SQLAccountHelper.dart';
-import 'package:nms/helpers/PrefHelper.dart';
+import 'package:nms/helpers/sql_helper.dart';
+import 'package:nms/helpers/pref_helper.dart';
 import '../Validator.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -21,6 +22,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
   bool _rememberMe = false;
+  bool passwordObsured = true;
 
   @override
   void initState() {
@@ -60,7 +62,7 @@ class _SignInScreenState extends State<SignInScreen> {
               height: 20.0,
             ),
             TextFormField(
-              obscureText: true,
+              obscureText: passwordObsured,
               controller: _passwordController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -68,9 +70,20 @@ class _SignInScreenState extends State<SignInScreen> {
                 }
                 return null;
               },
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock),
-                  hintText: 'Enter your Password'),
+                  labelText: 'New password',
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          passwordObsured = !passwordObsured;
+                        });
+                      },
+                      icon: Icon(
+                        passwordObsured
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ))),
             ),
             ListTile(
               title: const Text("Remember me"),
@@ -116,8 +129,8 @@ class _SignInScreenState extends State<SignInScreen> {
         PrefHelper.saveCredentials(
             _rememberMe, _emailController, _passwordController);
         // ignore: use_build_context_synchronously
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ChangePassWord()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const ChangePassWord()));
       }
     }
     !isLoginSuccess

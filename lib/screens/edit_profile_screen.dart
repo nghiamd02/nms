@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nms/screens/HomePage.dart';
 import 'package:nms/screens/switch_screen.dart';
 import '../Validator.dart';
-import '../helpers/SQLAccountHelper.dart';
+import '../helpers/sql_helper.dart';
 import '../models/account.dart';
 
 class EditProfile extends StatefulWidget {
@@ -33,7 +34,7 @@ class _EditProfileState extends State<EditProfile> {
               children: [
                 const Text(
                   'Edit your profile',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20, color: Colors.blue),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -73,8 +74,8 @@ class _EditProfileState extends State<EditProfile> {
                         onPressed: () {
                           if (_formkey.currentState!.validate()) {
                             SQLAccountHelper.updateAccount(Account(
-                                // firstName: _firstNameController.text,
-                                // lastName: _lastNameController.text,
+                                firstName: _firstNameController.text,
+                                lastName: _lastNameController.text,
                                 email: _emailController.text,
                                 id: SQLAccountHelper.currentAccount['id'],
                                 password: SQLAccountHelper
@@ -91,7 +92,7 @@ class _EditProfileState extends State<EditProfile> {
                     ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => SwitchScreen()));
+                              builder: (context) => const HomePage()));
                         },
                         child: const Text('Home'))
                   ],

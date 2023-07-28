@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nms/screens/change_password_screen.dart';
+import 'package:nms/screens/edit_profile_screen.dart';
 import 'package:nms/screens/switch_screen.dart';
 
 void main() => runApp(const MyApp());
