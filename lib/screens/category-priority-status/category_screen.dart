@@ -117,7 +117,7 @@ class _HomePageState extends State<_HomePage> {
     final rs = CategoryHelper.updateCategory(Category(
         id: id, name: _nameController.text, date: getCurrentDateTime()));
     if (!mounted) return;
-    if (rs == null) {
+    if (rs == false) {
       // 2:error 1: success
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('ERROR: Name duplicated!'),
