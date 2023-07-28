@@ -101,6 +101,8 @@ class _HomePageState extends State<_HomePage> {
     final rs = await CategoryHelper.createCategory(
       Category(name: _nameController.text, date: getCurrentDateTime()),
     );
+
+    if (!mounted) return;
     if (rs == false) {
       // 2:error 1: success
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -114,6 +116,7 @@ class _HomePageState extends State<_HomePage> {
   Future<void> _updateCategory(int id) async {
     final rs = CategoryHelper.updateCategory(Category(
         id: id, name: _nameController.text, date: getCurrentDateTime()));
+    if (!mounted) return;
     if (rs == null) {
       // 2:error 1: success
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

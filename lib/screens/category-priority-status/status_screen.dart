@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nms/models/status.dart';
 import 'package:nms/helpers/status_helper.dart';
 import 'package:intl/intl.dart';
+import 'package:nms/screens/category-priority-status/category_screen.dart';
 import 'package:nms/screens/home-dashboard/side_menu.dart';
 
 class StatusScreen extends StatelessWidget {
@@ -98,9 +99,9 @@ class _HomePageState extends State<_HomePage> {
 
   Future<void> _addStatus() async {
     bool rs = await StatusHelper.createStatus(
-      Status(name: _nameController.text),
+      Status(name: _nameController.text, date: getCurrentDateTime()),
     );
-
+    if (!mounted) return;
     if (rs == false) {
       // 2:error 1: success
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -114,7 +115,7 @@ class _HomePageState extends State<_HomePage> {
   Future<void> _updateStatus(int id) async {
     final rs = await StatusHelper.updateStatus(
         Status(id: id, name: _nameController.text));
-
+    if (!mounted) return;
     if (rs == false) {
       // 2:error 1: success
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

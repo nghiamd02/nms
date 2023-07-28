@@ -22,7 +22,6 @@ class _DashboardState extends State<Dashboard> {
     final data = await NoteHelper.getNotes();
     setState(() {
       _journals = data;
-      print(_journals.length);
       for (var i = 0; i < data.length; i++) {
         int id = Note.fromJson(_journals[i]).status ?? 0;
         final status = statuses.firstWhere((element) => (element.id == id));
@@ -55,33 +54,38 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SfCircularChart(
-              palette: const [Colors.grey, Colors.redAccent, Colors.blueAccent],
-              series: <CircularSeries>[
-                PieSeries<Status, String>(
-                  dataSource: statuses,
-                  xValueMapper: (Status data, _) => data.name,
-                  yValueMapper: (Status data, _) => ((sum[data] ?? 0) / _journals.length * 100),
-                  dataLabelMapper: (Status data, _) => "${data.name} \n${((sum[data] ?? 0) / _journals.length * 100)}%",
-                  dataLabelSettings: const DataLabelSettings(
-                      isVisible: true,
-                      color: Colors.black,
-                      opacity: 0.3,
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      )
-                  ),
-                  radius: '100%',
-                  startAngle: -80,
-                  endAngle: -80,
-                )
-              ]
+    return _journals.isEmpty
+        ? const Center(
+            child: Text('Empty'),
           )
-      ),
-    );
+        : Scaffold(
+            body: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: SfCircularChart(palette: const [
+                  Colors.grey,
+                  Colors.redAccent,
+                  Colors.blueAccent
+                ], series: <CircularSeries>[
+                  PieSeries<Status, String>(
+                    dataSource: statuses,
+                    xValueMapper: (Status data, _) => data.name,
+                    yValueMapper: (Status data, _) =>
+                        ((sum[data] ?? 0) / _journals.length * 100),
+                    dataLabelMapper: (Status data, _) =>
+                        "${data.name} \n${((sum[data] ?? 0) / _journals.length * 100)}%",
+                    dataLabelSettings: const DataLabelSettings(
+                        isVisible: true,
+                        color: Colors.black,
+                        opacity: 0.3,
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        )),
+                    radius: '100%',
+                    startAngle: -80,
+                    endAngle: -80,
+                  )
+                ])),
+          );
   }
 }

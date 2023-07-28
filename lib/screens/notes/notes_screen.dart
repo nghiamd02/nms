@@ -52,9 +52,16 @@ class _NoteScreenState extends State<NoteScreen> {
       _categories = categoriesData;
       _priorities = prioritiesData;
       _statusList = statusData;
-      _categoryValue = _categories[0][columnCategoryName];
-      _priorityValue = _priorities[0][columnPriorityName];
-      _statusValue = _statusList[0][columnStatusName];
+
+      if (_categories.isNotEmpty) {
+        _categoryValue = _categories[0][columnCategoryName];
+      }
+      if (_priorities.isNotEmpty) {
+        _priorityValue = _priorities[0][columnPriorityName];
+      }
+      if (_statusList.isNotEmpty) {
+        _statusValue = _statusList[0][columnStatusName];
+      }
     });
     _refreshJournals();
   }
@@ -185,6 +192,7 @@ class _NoteScreenState extends State<NoteScreen> {
               }
 
               _nameController.text = '';
+              _planDate = null;
 
               if (!mounted) return;
               Navigator.of(context).pop();
@@ -214,7 +222,6 @@ class _NoteScreenState extends State<NoteScreen> {
               ),
               itemCount: _journals.length,
               itemBuilder: (context, index) {
-
                 return NoteDetails(
                   index: index,
                   notes: _journals,

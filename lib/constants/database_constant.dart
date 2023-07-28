@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import '../helpers/category_helper.dart';
 import '../helpers/priority_helper.dart';
 import '../helpers/status_helper.dart';
-const String databaseName = 'nms2.db';
+const String databaseName = 'nms.db';
 
 class DBHelper {
   static Future<void> createStatusTable(Database database) async{
