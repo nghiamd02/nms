@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nms/screens/HomePage.dart';
 import 'package:nms/screens/switch_screen.dart';
-import '../Validator.dart';
+
 import '../helpers/account_helper.dart';
 import '../models/account.dart';
 
@@ -39,7 +39,7 @@ class _EditProfileState extends State<EditProfile> {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _firstNameController,
-                  validator: (value) => Validator.nameValidator(value),
+                  // validator: (value) => Validator.nameValidator(value),
                   decoration: const InputDecoration(
                     hintText: 'First name',
                   ),
@@ -49,7 +49,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 TextFormField(
                   controller: _lastNameController,
-                  validator: (value) => Validator.nameValidator(value),
+                  // validator: (value) => Validator.nameValidator(value),
                   decoration: const InputDecoration(
                     hintText: 'Last name',
                   ),
@@ -59,7 +59,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 TextFormField(
                   controller: _emailController,
-                  validator: (value) => Validator.nameValidator(value),
+                  // validator: (value) => Validator.nameValidator(value),
                   decoration: const InputDecoration(
                     hintText: ' Email',
                   ),

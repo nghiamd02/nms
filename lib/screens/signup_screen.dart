@@ -82,7 +82,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               obscureText: passwordObsured,
               onChanged: (val) => checkPassword(val),
               controller: SignUpScreen._passwordController,
-              validator: (value) => Validator.passwordValidator(value),
               decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock),
                   labelText: 'New password',

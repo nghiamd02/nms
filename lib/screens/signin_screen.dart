@@ -130,7 +130,7 @@ class _SignInScreenState extends State<SignInScreen> {
             _rememberMe, _emailController, _passwordController);
         // ignore: use_build_context_synchronously
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const EditProfile()));
+            MaterialPageRoute(builder: (context) => const ChangePassWord()));
       }
     }
     !isLoginSuccess

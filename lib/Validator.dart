@@ -14,15 +14,6 @@ class Validator {
     }
   }
 
-  static String? passwordValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your password';
-    } else if (value.length < 8) {
-      return 'Password must be as least 8 characters';
-    }
-    return null;
-  }
-
   static String? confirmPasswordValidator(
       String? value, TextEditingController passwordController) {
     if (value == null || value.isEmpty) {
@@ -42,5 +33,5 @@ class Validator {
     return null;
   }
 
-  static nameValidator(String? value) {}
+//   static nameValidator(String? value) {}
 }
