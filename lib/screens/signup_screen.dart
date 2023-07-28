@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../Validator.dart';
-import '../helpers/sql_helper.dart';
+import '../helpers/account_helper.dart';
 import '../models/account.dart';
 
 class SignUpScreen extends StatefulWidget {

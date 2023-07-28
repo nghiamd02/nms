@@ -4,7 +4,7 @@ import 'package:nms/screens/edit_profile_screen.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:nms/helpers/sql_helper.dart';
+import 'package:nms/helpers/account_helper.dart';
 import 'package:nms/helpers/pref_helper.dart';
 import '../Validator.dart';
 
@@ -130,7 +130,7 @@ class _SignInScreenState extends State<SignInScreen> {
             _rememberMe, _emailController, _passwordController);
         // ignore: use_build_context_synchronously
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ChangePassWord()));
+            MaterialPageRoute(builder: (context) => const EditProfile()));
       }
     }
     !isLoginSuccess

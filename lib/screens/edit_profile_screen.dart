@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nms/screens/HomePage.dart';
 import 'package:nms/screens/switch_screen.dart';
 import '../Validator.dart';
-import '../helpers/sql_helper.dart';
+import '../helpers/account_helper.dart';
 import '../models/account.dart';
 
 class EditProfile extends StatefulWidget {

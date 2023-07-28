@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'helpers/sql_helper.dart';
+import 'helpers/account_helper.dart';
 
 class Validator {
   static String? emailValidator(String? value) {
