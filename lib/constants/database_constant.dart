@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 
-const String databaseName = 'nms2.db';
+const String databaseName = 'nms.db';
 
 class DBHelper {
   static Future<void> createAccountTable(Database database) async {
@@ -10,7 +10,7 @@ class DBHelper {
     const columnPassword = 'password';
     const columnFirstName = 'firstName';
     const columnLastName = 'lastName';
-    const columnCreateAt = 'createAt';
+    const columnCreateAt = 'date';
 
     await database.execute('''CREATE TABLE $accountsTable(
     $columnId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -18,7 +18,7 @@ class DBHelper {
     $columnPassword TEXT NOT NULL, 
     $columnFirstName TEXT,
     $columnLastName TEXT,
-    $columnCreateAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)''');
+    $columnCreateAt TEXT)''');
   }
 
   static Future<Database> db() async {

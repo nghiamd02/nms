@@ -12,28 +12,7 @@ class SQLAccountHelper {
   static const columnFirstName = 'firstName';
   static const columnLastName = 'lastName';
   static const columnCreateAt = 'createAt';
-  // static const accountPath = 'nms2.db';
-
-  // static String get accountsTable => accountsTable;
-  // static String get columnId => columnId;
-
-  // static Future<void> createAccountTable(Database database) async {
-  //   await database.execute('''CREATE TABLE $_accountsTable(
-  //   $_columnId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  //   $_columnEmail TEXT NOT NULL,
-  //   $_columnPassword TEXT NOT NULL,
-  //   $_columnFirstName TEXT,
-  //   $_columnLastName TEXT,
-  //   $_columnCreateAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)''');
-  // }
-
-  // static Future<Database> db() async {
-  //   return openDatabase(_accountPath, version: 1,
-  //       onCreate: (Database database, int version) async {
-  //     await createAccountTable(database);
-
-  //   });
-  // }
+  static const columnNotes = 'notes';
 
   //Create new account
   static Future<int> createAccount(Account account) async {
