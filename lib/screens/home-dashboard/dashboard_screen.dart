@@ -3,8 +3,8 @@ import 'package:nms/helpers/note_helper.dart';
 import 'package:nms/helpers/status_helper.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../models/note.dart';
-import '../models/status.dart';
+import '../../models/note.dart';
+import '../../models/status.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -20,12 +20,12 @@ class _DashboardState extends State<Dashboard> {
 
   Future<void> getNotes() async {
     final data = await NoteHelper.getNotes();
-
     setState(() {
       _journals = data;
+      print(_journals.length);
       for (var i = 0; i < data.length; i++) {
-        int id = Note.fromJson(_journals[i]).id ?? 0;
-        final status = statuses.where((element) => (element.id == id)).first;
+        int id = Note.fromJson(_journals[i]).status ?? 0;
+        final status = statuses.firstWhere((element) => (element.id == id));
         sum[status] = (sum[status] ?? 0) + 1;
         if (i == data.length - 1) {
           sum.removeWhere((key, value) => (value == 0));

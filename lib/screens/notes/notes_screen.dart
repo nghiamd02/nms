@@ -8,7 +8,6 @@ import 'package:nms/helpers/status_helper.dart';
 
 import 'package:nms/models/note.dart';
 
-
 class NoteScreen extends StatefulWidget {
   const NoteScreen({super.key});
 
@@ -33,8 +32,8 @@ class _NoteScreenState extends State<NoteScreen> {
 
   Future<void> _refreshJournals() async {
     final data = await NoteHelper.getNotes();
-
     setState(() {
+      print('set notes');
       _journals = data;
       _isLoading = false;
     });
@@ -43,17 +42,23 @@ class _NoteScreenState extends State<NoteScreen> {
   @override
   void initState() {
     super.initState();
-    getData();
-    _refreshJournals();
+    _getData();
   }
 
-  Future<void> getData() async {
-    _categories = await CategoryHelper.getCategories();
-    _priorities = await PriorityHelper.getPriorities();
-    _statusList = await StatusHelper.getStatusList();
-    _categoryValue = _categories[0][columnCategoryName];
-    _priorityValue = _priorities[0][columnPriorityName];
-    _statusValue = _statusList[0][columnStatusName];
+  Future<void> _getData() async {
+    final categoriesData = await CategoryHelper.getCategories();
+    final prioritiesData = await PriorityHelper.getPriorities();
+    final statusData = await StatusHelper.getStatusList();
+    setState(() {
+      print('set 3 data');
+      _categories = categoriesData;
+      _priorities = prioritiesData;
+      _statusList = statusData;
+      _categoryValue = _categories[0][columnCategoryName];
+      _priorityValue = _priorities[0][columnPriorityName];
+      _statusValue = _statusList[0][columnStatusName];
+    });
+    _refreshJournals();
   }
 
   Widget _addingDialog({Map<String, dynamic>? currentNote}) {
@@ -211,6 +216,11 @@ class _NoteScreenState extends State<NoteScreen> {
               ),
               itemCount: _journals.length,
               itemBuilder: (context, index) {
+                print('pass:');
+                print(_categories);
+                print(_priorities);
+                print(_statusList);
+
                 return NoteDetails(
                   index: index,
                   notes: _journals,
@@ -246,7 +256,7 @@ class _NoteScreenState extends State<NoteScreen> {
     int statusId = _statusList.firstWhere((element) =>
         element[columnStatusName] == _statusValue!)[columnStatusId];
 
-   await NoteHelper.createNote(Note(
+    await NoteHelper.createNote(Note(
         name: noteName,
         category: catId,
         priority: priorityId,
@@ -291,26 +301,32 @@ class NoteDetails extends StatelessWidget {
       required this.editDialog,
       required this.deleteNote,
       required this.currentNote,
-      required this.categories, required this.priorities, required this.statusList});
+      required this.categories,
+      required this.priorities,
+      required this.statusList});
 
   final int index;
   final List<Map<String, dynamic>> notes;
   final Widget Function({Map<String, dynamic> currentNote}) editDialog;
   final Future<void> Function(int id) deleteNote;
   final Map<String, dynamic> currentNote;
-  final List<Map<String,dynamic>> categories;
-  final List<Map<String,dynamic>> priorities;
-  final List<Map<String,dynamic>> statusList;
+  final List<Map<String, dynamic>> categories;
+  final List<Map<String, dynamic>> priorities;
+  final List<Map<String, dynamic>> statusList;
 
   @override
   Widget build(BuildContext context) {
+    print('receive:');
+    print(categories.length);
+    print(priorities.length);
+    print(statusList.length);
     Note? nowNote = Note.fromJson(notes[index]);
-    String noteCategory = categories.firstWhere((element) => element[columnCategoryId] == nowNote.category)[columnCategoryName];
-    String notePriority = priorities.firstWhere((element) => element[columnPriorityId] == nowNote.priority)[columnPriorityName];
-    String noteStatus = statusList.firstWhere((element) => element[columnStatusId] == nowNote.status)[columnStatusName];
-    print(noteStatus);
-    print(noteCategory);
-    print(notePriority);
+    String noteCategory = categories.firstWhere((element) =>
+        element[columnCategoryId] == nowNote.category)[columnCategoryName];
+    String notePriority = priorities.firstWhere((element) =>
+        element[columnPriorityId] == nowNote.priority)[columnPriorityName];
+    String noteStatus = statusList.firstWhere((element) =>
+        element[columnStatusId] == nowNote.status)[columnStatusName];
 
     return Card(
       color: Colors.orange[200],

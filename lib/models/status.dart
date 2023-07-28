@@ -1,4 +1,3 @@
-import 'package:sqflite/sqflite.dart';
 class Status {
   int? id;
   String? name;

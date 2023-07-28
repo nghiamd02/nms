@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nms/models/status.dart';
 import 'package:nms/helpers/status_helper.dart';
 import 'package:intl/intl.dart';
-import 'package:nms/screens/side_menu.dart';
+import 'package:nms/screens/home-dashboard/side_menu.dart';
 
 class StatusScreen extends StatelessWidget {
   const StatusScreen({super.key});

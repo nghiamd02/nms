@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:nms/screens/category_screen.dart';
-import 'package:nms/screens/dashboard_screen.dart';
-import 'package:nms/screens/notes_screen.dart';
-import 'package:nms/screens/priority_screen.dart';
-import 'package:nms/screens/side_menu.dart';
-import 'package:nms/screens/status_screen.dart';
+import 'package:nms/screens/category-priority-status/category_screen.dart';
+import 'package:nms/screens/home-dashboard/dashboard_screen.dart';
+import 'package:nms/screens/notes/notes_screen.dart';
+import 'package:nms/screens/category-priority-status/priority_screen.dart';
+import 'package:nms/screens/home-dashboard/side_menu.dart';
+import 'package:nms/screens/category-priority-status/status_screen.dart';
 
 const _screens = [
   Dashboard(),

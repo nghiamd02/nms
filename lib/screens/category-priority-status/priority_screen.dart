@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nms/models/priority.dart';
 import 'package:nms/helpers/priority_helper.dart';
 import 'package:intl/intl.dart';
-import 'package:nms/screens/side_menu.dart';
+import 'package:nms/screens/home-dashboard/side_menu.dart';
 
 class PriorityScreen extends StatelessWidget {
   const PriorityScreen({super.key});

@@ -1,4 +1,3 @@
-import 'package:sqflite/sqflite.dart';
 class Category {
   final int? id;
   final String? name;
@@ -10,5 +9,3 @@ class Category {
     return {'id': id, 'name': name, 'date': date};
   }
 }
-
-

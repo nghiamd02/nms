@@ -1,5 +1,3 @@
-import 'package:sqflite/sqflite.dart';
-
 class Priority {
   final int? id;
   final String? name;
