@@ -33,7 +33,6 @@ class _NoteScreenState extends State<NoteScreen> {
   Future<void> _refreshJournals() async {
     final data = await NoteHelper.getNotes();
     setState(() {
-      print('set notes');
       _journals = data;
       _isLoading = false;
     });
@@ -50,7 +49,6 @@ class _NoteScreenState extends State<NoteScreen> {
     final prioritiesData = await PriorityHelper.getPriorities();
     final statusData = await StatusHelper.getStatusList();
     setState(() {
-      print('set 3 data');
       _categories = categoriesData;
       _priorities = prioritiesData;
       _statusList = statusData;
@@ -216,10 +214,6 @@ class _NoteScreenState extends State<NoteScreen> {
               ),
               itemCount: _journals.length,
               itemBuilder: (context, index) {
-                print('pass:');
-                print(_categories);
-                print(_priorities);
-                print(_statusList);
 
                 return NoteDetails(
                   index: index,
@@ -316,10 +310,6 @@ class NoteDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('receive:');
-    print(categories.length);
-    print(priorities.length);
-    print(statusList.length);
     Note? nowNote = Note.fromJson(notes[index]);
     String noteCategory = categories.firstWhere((element) =>
         element[columnCategoryId] == nowNote.category)[columnCategoryName];
