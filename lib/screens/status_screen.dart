@@ -27,7 +27,7 @@ class _HomePageState extends State<_HomePage> {
   bool _isLoading = true;
 
   Future<void> _refreshJournals() async {
-    final data = await StatusHelper.getStatuses();
+    final data = await StatusHelper.getStatusList();
 
     setState(() {
       _journals = data;
@@ -47,7 +47,7 @@ class _HomePageState extends State<_HomePage> {
   void _showForm(int? id) async {
     if (id != null) {
       final existingJournal =
-      _journals.firstWhere((element) => element['id'] == id);
+          _journals.firstWhere((element) => element['id'] == id);
       _nameController.text = existingJournal['name'];
     }
     showModalBottomSheet(
@@ -55,61 +55,74 @@ class _HomePageState extends State<_HomePage> {
         elevation: 5,
         isScrollControlled: true,
         builder: (_) => Container(
-          padding: EdgeInsets.only(
-            top: 15,
-            left: 15,
-            right: 15,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 120,
-          ), // EdgeInsets.only
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              TextFormField(
-                controller: _nameController,
-                decoration:
-                const InputDecoration(hintText: 'Status Form'),
-              ), // TextFormField
-              const SizedBox(
-                height: 10,
-              ), // SizedBox
-              // SizedBox
+              padding: EdgeInsets.only(
+                top: 15,
+                left: 15,
+                right: 15,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 120,
+              ), // EdgeInsets.only
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(hintText: 'Status Form'),
+                  ), // TextFormField
+                  const SizedBox(
+                    height: 10,
+                  ), // SizedBox
+                  // SizedBox
 
-              ElevatedButton(
-                onPressed: () async {
-                  if (id == null) {
-                    await _addStatus();
-                  }
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (id == null) {
+                        await _addStatus();
+                      }
 
-                  if (id != null) {
-                    await _updateStatus(id);
-                  }
+                      if (id != null) {
+                        await _updateStatus(id);
+                      }
 
-                  _nameController.text = '';
+                      _nameController.text = '';
 
-                  if (!mounted) return;
-                  Navigator.of(context).pop();
-                },
-                child: Text(id == null ? 'Create New' : 'Update'),
-              )
-            ],
-          ),
-        ));
+                      if (!mounted) return;
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(id == null ? 'Create New' : 'Update'),
+                  )
+                ],
+              ),
+            ));
   }
 
   Future<void> _addStatus() async {
-    await StatusHelper.createStatus(
-        Status(
-            name: _nameController.text, date: getCurrentDateTime()),
-            () {});
-    _refreshJournals();
+    bool rs = await StatusHelper.createStatus(
+      Status(name: _nameController.text),
+    );
+
+    if (rs == false) {
+      // 2:error 1: success
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('ERROR: Name duplicated!'),
+      ));
+    } else {
+      _refreshJournals();
+    }
   }
 
   Future<void> _updateStatus(int id) async {
-    await StatusHelper.updateStatus(
+    final rs = await StatusHelper.updateStatus(
         Status(id: id, name: _nameController.text));
 
-    _refreshJournals();
+    if (rs == false) {
+      // 2:error 1: success
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('ERROR: Name duplicated!'),
+      ));
+    } else {
+      _refreshJournals();
+    }
   }
 
   Future<void> _deleteStatus(int id) async {
@@ -125,41 +138,36 @@ class _HomePageState extends State<_HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const SideMenu(),
-      appBar: AppBar(
-        title: const Text('Status Form'),
-      ), // AppBar
-
       body: _isLoading
           ? const Center(
-        child: CircularProgressIndicator(),
-      ) // Center
+              child: CircularProgressIndicator(),
+            ) // Center
           : ListView.builder(
-        itemCount: _journals.length,
-        itemBuilder: (context, index) => Card(
-          color: Colors.orange[200],
-          margin: const EdgeInsets.all(15),
-          child: ListTile(
-              title: Text("Name: ${_journals[index]['name']}"),
-              subtitle: Text(getCurrentDateTime().toString()),
-              trailing: SizedBox(
-                width: 100,
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () => _showForm(_journals[index]['id']),
-                    ), // IconButton
-                    IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () =>
-                          _deleteStatus(_journals[index]['id']),
-                    ),
-                  ],
-                ),
-              )),
-        ),
-      ),
+              itemCount: _journals.length,
+              itemBuilder: (context, index) => Card(
+                color: Colors.orange[200],
+                margin: const EdgeInsets.all(15),
+                child: ListTile(
+                    title: Text("Name: ${_journals[index]['name']}"),
+                    // subtitle: Text(getCurrentDateTime().toString()),
+                    trailing: SizedBox(
+                      width: 100,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () => _showForm(_journals[index]['id']),
+                          ), // IconButton
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () =>
+                                _deleteStatus(_journals[index]['id']),
+                          ),
+                        ],
+                      ),
+                    )),
+              ),
+            ),
 
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -169,6 +177,6 @@ class _HomePageState extends State<_HomePage> {
   }
 }
 
-String getCurrentDateTime() {
-  return DateFormat('dd/MM/yyyy h:mm a').format(DateTime.now());
-}
+// String getCurrentDateTime() {
+//   return DateFormat('dd/MM/yyyy h:mm a').format(DateTime.now());
+// }

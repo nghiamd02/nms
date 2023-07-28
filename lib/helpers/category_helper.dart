@@ -1,126 +1,55 @@
-import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:nms/models/category.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:nms/constants/database_constant.dart';
 
-const String tableCategory = 'Category';
-const String columnId = 'id';
-const String columnTitle = 'name';
-const String columnDate = 'date';
+const String tableCategory = 'categories';
+const String columnCategoryId = 'id';
+const String columnCategoryName = 'name';
+const String columnCategoryDate = 'date';
 
 class CategoryHelper {
-  static Future<void> createCategoryTable(Database database) async {
-    await database.execute('''CREATE TABLE $tableCategory(
-      $columnId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      $columnTitle TEXT,
-      $columnDate TEXT
-      )''');
-  }
+  static Future<bool> createCategory(Category category) async {
+    final db = await DBHelper.db();
 
-  static Future<Database> db() async {
-    return openDatabase(
-      'nms.db',
-      version: 1,
-      onCreate: (Database database, int version) async {
-        await createCategoryTable(database);
-      },
-    );
-  }
-
-  static Future<int> createCategory(Category category, refreshJournals) async {
-    final db = await CategoryHelper.db();
-
-    final id = await db.insert('Category', category.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
-    return id;
+    try {
+      final id = await db.insert(tableCategory, category.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.fail);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   static Future<List<Map<String, dynamic>>> getCategories() async {
-    final db = await CategoryHelper.db();
-    return db.query('Category', orderBy: "id");
+    final db = await DBHelper.db();
+    return db.query(tableCategory, orderBy: 'id');
   }
 
   static Future<List<Map<String, dynamic>>> getCategory(int id) async {
-    final db = await CategoryHelper.db();
-    return db.query('Category', where: "id = ?", whereArgs: [id], limit: 1);
+    final db = await DBHelper.db();
+    return db.query(tableCategory, where: 'id = ?', whereArgs: [id], limit: 1);
   }
 
-  static Future<int> updateCategory(Category category) async {
-    final db = await CategoryHelper.db();
-    final result = await db.update('Category', category.toMap(),
-        where: "id= ?", whereArgs: [category.id]);
-    return result;
+  static Future<bool> updateCategory(Category category) async {
+    final db = await DBHelper.db();
+    try {
+      final id = await db.update(tableCategory, category.toMap(),
+          where: 'id = ?',
+          whereArgs: [category.id],
+          conflictAlgorithm: ConflictAlgorithm.fail);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   static Future<void> deleteCategory(int id) async {
-    final db = await CategoryHelper.db();
+    final db = await DBHelper.db();
     try {
-      await db.delete("Category", where: "id = ?", whereArgs: [id]);
+      db.delete(tableCategory, where: 'id = ?', whereArgs: [id]);
     } catch (err) {
-      debugPrint("Something went wrong when deleting an Category: $err");
+      debugPrint('Something went wrong when deleting a category: $err');
     }
   }
 }
-
-// import 'package:flutter/cupertino.dart';
-// import 'package:nms/models/category.dart';
-// import 'package:sqflite/sqflite.dart';
-// import 'package:nms/constants/database_constant.dart';
-//
-// const String tableCategory = 'categories';
-// const String columnId = 'id';
-// const String columnTitle = 'title';
-//
-// class CategoryHelper {
-//   static Future<void> createCategoryTable(Database database) async{
-//     await database.execute('''
-//       CREATE TABLE $tableCategory(
-//           $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
-//           $columnTitle TEXT NOT NULL,
-//           createAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-//           )
-//     ''');
-//   }
-//
-//   static Future<Database> db() async{
-//     return openDatabase(
-//         databaseName,
-//         version: 1,
-//         onCreate: (Database database, int version) async{
-//           await createCategoryTable(database);
-//         }
-//     );
-//   }
-//
-//   static Future<int> createCategory(Category category) async{
-//     final db = await CategoryHelper.db();
-//     final id = await  db.insert(tableCategory, category.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
-//     return id;
-//   }
-//
-//   static Future<List<Map<String, dynamic>>> getCategories() async{
-//     final db = await CategoryHelper.db();
-//     return db.query(tableCategory, orderBy: 'id');
-//   }
-//
-//   static Future<List<Map<String, dynamic>>> getCategory(int id) async{
-//     final db = await CategoryHelper.db();
-//     return db.query(tableCategory, where: 'id = ?', whereArgs: [id], limit: 1);
-//   }
-//
-//   static Future<int> updateCategory(Category category) async{
-//     final db = await CategoryHelper.db();
-//
-//     final result = await db.update(tableCategory, category.toMap(), where: 'id = ?', whereArgs: [category.id]);
-//     return result;
-//   }
-//
-//   static Future<void> deleteCategory(int id) async{
-//     final db = await CategoryHelper.db();
-//     try{
-//       db.delete(tableCategory, where: 'id = ?', whereArgs: [id]);
-//     }catch(err){
-//       debugPrint('Something went wrong when deleting a category: $err');
-//     }
-//
-//   }
-// }

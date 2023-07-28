@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nms/helpers/note_helper.dart';
 import 'package:nms/helpers/status_helper.dart';
-import 'package:nms/screens/side_menu.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../models/note.dart';
 import '../models/status.dart';
 
 class Dashboard extends StatefulWidget {
@@ -14,39 +14,48 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  List<Map<String, dynamic>> _journals = [];
+  List<Status> statuses = [];
+  Map<Status, int> sum = {};
+
+  Future<void> getNotes() async {
+    final data = await NoteHelper.getNotes();
+
+    setState(() {
+      _journals = data;
+      for (var i = 0; i < data.length; i++) {
+        int id = Note.fromJson(_journals[i]).id ?? 0;
+        final status = statuses.where((element) => (element.id == id)).first;
+        sum[status] = (sum[status] ?? 0) + 1;
+        if (i == data.length - 1) {
+          sum.removeWhere((key, value) => (value == 0));
+          statuses.removeWhere((e) => (sum[e] == 0 || sum[e] == null));
+        }
+      }
+    });
+  }
+
+  Future<void> getListStatus() async {
+    final data = await StatusHelper.getStatusList();
+
+    setState(() {
+      for (var i = 0; i < data.length; i++) {
+        statuses.add(Status.fromJson(data[i]));
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getListStatus();
+    getNotes();
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> journals = [];
-    List<Status> statuses = [];
-    Map<Status, int> sum = {};
-
-    Future<void> getNotes() async {
-      final data = await NoteHelper.getNotes();
-
-      setState(() {
-        journals = data;
-      });
-    }
-
-    Future<Status> getStatus(int id) async {
-      return await StatusHelper.getStatus(id);
-    }
-
-    getNotes();
-
-    for (var i = 0; i < journals.length; i++) {
-      Status data = getStatus(journals[i]['id_status']) as Status;
-      sum[data] = (sum[data] ?? 0) + 1;
-      if (!statuses.contains(data)) {
-        statuses.add(data);
-      }
-    }
-
     return Scaffold(
-      drawer: SideMenu(),
-      appBar: AppBar(
-        title: const Text('Dashboard'),
-      ),
       body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SfCircularChart(
@@ -55,9 +64,8 @@ class _DashboardState extends State<Dashboard> {
                 PieSeries<Status, String>(
                   dataSource: statuses,
                   xValueMapper: (Status data, _) => data.name,
-                  yValueMapper: (Status data, _) => ((sum[data] ?? 0) / journals.length * 100),
-                  // Map the data label text for each point from the data source
-                  dataLabelMapper: (Status data, _) => "${data.name} \n${((sum[data] ?? 0) / journals.length * 100)}%",
+                  yValueMapper: (Status data, _) => ((sum[data] ?? 0) / _journals.length * 100),
+                  dataLabelMapper: (Status data, _) => "${data.name} \n${((sum[data] ?? 0) / _journals.length * 100)}%",
                   dataLabelSettings: const DataLabelSettings(
                       isVisible: true,
                       color: Colors.black,
@@ -77,4 +85,3 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 }
-
